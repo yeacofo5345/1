@@ -5,8 +5,16 @@ const congratsText = document.getElementById('congratsText');
 const mainCard = document.getElementById('mainCard');
 const backBtn = document.getElementById('backBtn');
 
-// 1. Нажатие на "Открыть"
+// Находим аудио
+const bgMusic = document.getElementById('bgMusic');
+
 openBtn.addEventListener('click', () => {
+  // Включаем музыку
+  if(bgMusic) {
+    bgMusic.volume = 0.5; // Громкость на 50%
+    bgMusic.play().catch(e => console.log("Браузер заблокировал звук"));
+  }
+
   message.classList.add('show');
   openBtn.style.display = 'none';
 
@@ -15,7 +23,6 @@ openBtn.addEventListener('click', () => {
   }, 500);
 });
 
-// 2. Нажатие на "ТЫК"
 surpriseBtn.addEventListener('click', () => {
   surpriseBtn.style.transform = 'scale(0.95)';
   surpriseBtn.textContent = '💖';
@@ -24,7 +31,6 @@ surpriseBtn.addEventListener('click', () => {
   congratsText.classList.add('show');
 });
 
-// 3. Нажатие на "Назад"
 backBtn.addEventListener('click', () => {
   mainCard.classList.remove('blur-active');
   congratsText.classList.remove('show');
@@ -35,7 +41,6 @@ backBtn.addEventListener('click', () => {
   }, 500);
 });
 
-// Летающие сердечки на фоне
 const heartsContainer = document.getElementById('hearts');
 const heartEmojis = ['💖', '💕', '💗', '🌸', '✨', '🎀'];
 

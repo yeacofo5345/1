@@ -4,16 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>С днём рождения! 🎉</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="stylesheet" href="static/style.css" />
 </head>
 <body>
-  <!-- Фоновые сердечки -->
+  <!-- АУДИОПЛЕЕР -->
+  <audio id="bgMusic" loop>
+    <source src="static/music.mp3" type="audio/mpeg">
+  </audio>
+
   <div class="hearts" id="hearts"></div>
 
-  <!-- Основная карточка -->
   <main class="card" id="mainCard">
 
-    <!-- Контент, который будет скрываться и блюриться -->
     <div class="card-content">
       <h1 class="title">С днём рождения, <span id="name">Ленуська</span>! 🎂</h1>
       <p class="subtitle">Нажми на кнопку, и отсканируй QR ✨</p>
@@ -23,7 +25,7 @@
       </button>
 
       <div class="message" id="message">
-        <img src="/static/qr.png" alt="Мой QR-код" class="qr-image">
+        <img src="static/qr.png" alt="Мой QR-код" class="qr-image">
 
         <button class="btn btn-primary hidden-btn" id="surpriseBtn">
           <span class="btn-text">ТЫК</span>
@@ -31,7 +33,6 @@
       </div>
     </div>
 
-    <!-- Текст поздравления, который появится поверх блюра -->
     <div class="congrats-text" id="congratsText">
       <p class="line">Мой милый Сови,</p>
       <p class="line">Я желаю тебе здоровья и благополучия.</p>
@@ -40,7 +41,6 @@
       <p class="line">Будь всегда на позитивчике и не унывай!</p>
       <p class="line signature">С любовью, Еакофа.</p>
 
-      <!-- Кнопка Назад -->
       <button class="btn btn-primary" id="backBtn">
         <span class="btn-text">Назад</span>
       </button>
@@ -48,6 +48,6 @@
 
   </main>
 
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script src="static/script.js"></script>
 </body>
 </html>
