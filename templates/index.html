@@ -7,8 +7,10 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
+  <!-- Фоновые сердечки -->
   <div class="hearts" id="hearts"></div>
 
+  <!-- Основная карточка -->
   <main class="card">
     <h1 class="title">С днём рождения, <span id="name">Ленуська</span>! 🎂</h1>
     <p class="subtitle">Нажми на кнопку, и отсканируй QR ✨</p>
@@ -18,7 +20,9 @@
       <span class="btn-text">Открыть</span>
     </button>
 
+    <!-- Блок, который открывается -->
     <div class="message" id="message">
+      <!-- QR-код. ВАЖНО: имя файла должно точно совпадать с тем, что на GitHub -->
       <img src="{{ url_for('static', filename='qr.png') }}" alt="Мой QR-код" class="qr-image">
 
       <!-- Вторая кнопка (появится после клика на первую) -->
@@ -28,7 +32,7 @@
     </div>
   </main>
 
-  <!-- Блок с поздравлением -->
+  <!-- Блок с поздравлением справа (для ПК) -->
   <div class="congrats-text" id="congratsText">
     <p class="line">Мой милый Сови,</p>
     <p class="line">Я желаю тебе здоровья и благополучия.</p>
@@ -38,6 +42,7 @@
     <p class="line signature">С любовью, Еакофа.</p>
   </div>
 
+  <!-- Подключение скриптов -->
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
