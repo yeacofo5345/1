@@ -71,14 +71,14 @@ function animate() {
   }
 }
 
-// Запускаем салют 1 раз при загрузке страницы
-window.addEventListener('load', () => {
-  // Делаем 3 взрыва в разных местах с небольшой задержкой
-  setTimeout(() => createExplosion(canvas.width * 0.2, canvas.height * 0.3), 200);
-  setTimeout(() => createExplosion(canvas.width * 0.8, canvas.height * 0.4), 600);
-  setTimeout(() => createExplosion(canvas.width * 0.5, canvas.height * 0.7), 1000);
+// Запускаем салют при загрузке
+setTimeout(() => {
+  // 3 взрыва
+  createExplosion(canvas.width * 0.2, canvas.height * 0.3);
+  setTimeout(() => createExplosion(canvas.width * 0.8, canvas.height * 0.4), 400);
+  setTimeout(() => createExplosion(canvas.width * 0.5, canvas.height * 0.7), 800);
   animate();
-});
+}, 500); // Задержка 0.5 секунды, чтобы холст точно загрузился
 
 // ===== ОСТАЛЬНАЯ ЛОГИКА =====
 openBtn.addEventListener('click', () => {
