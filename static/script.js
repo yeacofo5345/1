@@ -26,13 +26,9 @@ surpriseBtn.addEventListener('click', () => {
 
 // 3. Нажатие на "Назад"
 backBtn.addEventListener('click', () => {
-  // Убираем блюр
   mainCard.classList.remove('blur-active');
-
-  // Скрываем текст и саму кнопку Назад
   congratsText.classList.remove('show');
 
-  // Возвращаем кнопку ТЫК в исходный вид
   setTimeout(() => {
     surpriseBtn.style.transform = '';
     surpriseBtn.textContent = 'ТЫК';
