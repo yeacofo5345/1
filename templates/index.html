@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>С днём рождения! 🎉</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <div class="hearts" id="hearts"></div>
+
+  <main class="card">
+    <h1 class="title">С днём рождения, <span id="name">Ленуська</span>! 🎂</h1>
+    <p class="subtitle">Нажми на кнопку, и отсканируй QR ✨</p>
+
+    <!-- Первая кнопка -->
+    <button class="btn btn-primary" id="openBtn">
+      <span class="btn-text">Открыть</span>
+    </button>
+
+    <div class="message" id="message">
+      <img src="{{ url_for('static', filename='qr.png') }}" alt="Мой QR-код" class="qr-image">
+
+      <!-- Вторая кнопка (появится после клика на первую) -->
+      <button class="btn btn-primary hidden-btn" id="surpriseBtn">
+        <span class="btn-text">ТЫК</span>
+      </button>
+    </div>
+  </main>
+
+  <!-- Блок с поздравлением -->
+  <div class="congrats-text" id="congratsText">
+    <p class="line">Мой милый Сови,</p>
+    <p class="line">Я желаю тебе здоровья и благополучия.</p>
+    <p class="line">А также:</p>
+    <p class="line money">Много-много-много-много денег!</p>
+    <p class="line">Будь всегда на позитивчике и не унывай!</p>
+    <p class="line signature">С любовью, Еакофа.</p>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
