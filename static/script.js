@@ -1,31 +1,15 @@
-// Добавляем эффект волны (ripple) для всех кнопок
-document.querySelectorAll('.btn').forEach(btn => {
-  btn.addEventListener('click', function (e) {
-    const ripple = document.createElement('span');
-    ripple.classList.add('ripple');
-    const rect = this.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    ripple.style.width = ripple.style.height = size + 'px';
-    ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
-    ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
-    this.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 600);
-  });
-});
-
 const openBtn = document.getElementById('openBtn');
 const message = document.getElementById('message');
 const surpriseBtn = document.getElementById('surpriseBtn');
 const congratsText = document.getElementById('congratsText');
+const mainCard = document.getElementById('mainCard');
+const backBtn = document.getElementById('backBtn');
 
 // 1. Нажатие на "Открыть"
 openBtn.addEventListener('click', () => {
-  message.classList.add('show'); // Показываем блок с QR
-
-  // Скрываем первую кнопку
+  message.classList.add('show');
   openBtn.style.display = 'none';
 
-  // Показываем вторую кнопку "ТЫК" с задержкой (когда QR уже выехал)
   setTimeout(() => {
     surpriseBtn.classList.add('show-btn');
   }, 500);
@@ -33,12 +17,26 @@ openBtn.addEventListener('click', () => {
 
 // 2. Нажатие на "ТЫК"
 surpriseBtn.addEventListener('click', () => {
-  // Меняем кнопку на сердечко
   surpriseBtn.style.transform = 'scale(0.95)';
   surpriseBtn.textContent = '💖';
 
-  // Запускаем текст
+  mainCard.classList.add('blur-active');
   congratsText.classList.add('show');
+});
+
+// 3. Нажатие на "Назад"
+backBtn.addEventListener('click', () => {
+  // Убираем блюр
+  mainCard.classList.remove('blur-active');
+
+  // Скрываем текст и саму кнопку Назад
+  congratsText.classList.remove('show');
+
+  // Возвращаем кнопку ТЫК в исходный вид
+  setTimeout(() => {
+    surpriseBtn.style.transform = '';
+    surpriseBtn.textContent = 'ТЫК';
+  }, 500);
 });
 
 // Летающие сердечки на фоне

@@ -6,7 +6,7 @@ body {
   background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fbc2eb 100%);
   background-size: 200% 200%;
   animation: gradientMove 10s ease infinite;
-  overflow-x: hidden; /* Запрещаем горизонтальный скролл */
+  overflow: hidden;
 }
 
 @keyframes gradientMove {
@@ -21,15 +21,21 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 24px;
   padding: 40px 30px;
   width: 90%;
   max-width: 400px;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   text-align: center;
   box-shadow: 0 20px 60px rgba(200, 100, 150, 0.25);
   animation: cardIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: background 0.8s ease, backdrop-filter 0.8s ease;
 }
 
 @keyframes cardIn {
@@ -37,6 +43,92 @@ body {
   to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 
+/* Контент внутри карточки (заголовок, QR, кнопки) */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: opacity 0.5s ease;
+}
+
+/* ЭФФЕКТ БЛЮРА (включается через JS) */
+.card.blur-active {
+  background: rgba(255, 255, 255, 0.2); /* Карточка становится почти прозрачной */
+  backdrop-filter: blur(20px); /* Сильный блюр */
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Прячем старое содержимое */
+.card.blur-active .card-content {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ===== ТЕКСТ ПОЗДРАВЛЕНИЯ ===== */
+.congrats-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.congrats-text .line {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  color: #ffffff;
+  font-weight: bold;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  text-align: center;
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.congrats-text.show .line {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Задержки появления строк */
+.congrats-text.show .line:nth-child(1) { transition-delay: 0.2s; }
+.congrats-text.show .line:nth-child(2) { transition-delay: 0.8s; }
+.congrats-text.show .line:nth-child(3) { transition-delay: 1.4s; }
+.congrats-text.show .line:nth-child(4) { transition-delay: 2.0s; }
+.congrats-text.show .line:nth-child(5) { transition-delay: 2.6s; }
+.congrats-text.show .line:nth-child(6) { transition-delay: 3.2s; }
+
+.congrats-text .signature {
+  margin-top: 15px;
+  font-style: italic;
+  font-size: 1.3rem;
+}
+
+/* Кнопка Назад */
+#backBtn {
+  margin-top: 30px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition-delay: 3.8s; /* Появится после последней строчки */
+}
+
+.congrats-text.show #backBtn {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ===== СТИЛИ ЭЛЕМЕНТОВ ===== */
 .title {
   font-size: clamp(1.5rem, 6vw, 2.2rem);
   color: #d6336c;
@@ -50,7 +142,6 @@ body {
   font-size: 1rem;
 }
 
-/* ===== КНОПКИ ===== */
 .btn {
   position: relative;
   padding: 15px 40px;
@@ -60,33 +151,23 @@ body {
   font-weight: 700;
   letter-spacing: 1px;
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent; /* Убирает синий след на телефоне */
+  -webkit-tap-highlight-color: transparent;
   user-select: none;
   outline: none;
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
   will-change: transform;
-  margin-top: 15px;
-}
-
-.btn-primary {
-  background: rgba(214, 51, 108, 0.85); /* Полупрозрачный малиновый */
+  background: rgba(214, 51, 108, 0.85);
   backdrop-filter: blur(10px);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 4px 15px rgba(214, 51, 108, 0.3);
 }
 
-.btn-primary:hover {
-  background: rgba(214, 51, 108, 1);
-  transform: translateY(-2px) scale(1.02);
-}
-
-.btn-primary:active {
+.btn:active {
   transform: scale(0.92);
   background: rgba(180, 30, 80, 1);
 }
 
-/* ===== БЛОК С QR-КОДОМ ===== */
 .message {
   max-height: 0;
   opacity: 0;
@@ -106,7 +187,7 @@ body {
 
 .qr-image {
   width: 100%;
-  max-width: 200px;
+  max-width: 180px;
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
   border: 4px solid white;
@@ -114,7 +195,6 @@ body {
   margin: 0 auto;
 }
 
-/* Кнопка ТЫК (скрытая изначально) */
 .hidden-btn {
   opacity: 0;
   transform: scale(0.8);
@@ -149,102 +229,4 @@ body {
   10% { opacity: 0.6; }
   90% { opacity: 0.6; }
   to { transform: translateY(-100px) rotate(360deg); opacity: 0; }
-}
-
-/* ===== ТЕКСТ ПОЗДРАВЛЕНИЯ ===== */
-.congrats-text {
-  position: fixed;
-  right: 8%;
-  top: 50%;
-  transform: translateY(-50%);
-  max-width: 420px;
-  text-align: left;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.congrats-text .line {
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  font-size: 1.25rem;
-  line-height: 1.6;
-  margin-bottom: 14px;
-  color: #ffffff;
-  font-weight: bold;
-  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6); /* Чтобы белый текст читался на розовом */
-
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.congrats-text.show .line {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Задержки для последовательного появления строчек */
-.congrats-text.show .line:nth-child(1) { transition-delay: 0.2s; }
-.congrats-text.show .line:nth-child(2) { transition-delay: 0.8s; }
-.congrats-text.show .line:nth-child(3) { transition-delay: 1.4s; }
-.congrats-text.show .line:nth-child(4) { transition-delay: 2.0s; }
-.congrats-text.show .line:nth-child(5) { transition-delay: 2.6s; }
-.congrats-text.show .line:nth-child(6) { transition-delay: 3.2s; }
-
-.congrats-text .signature {
-  margin-top: 24px;
-  font-style: italic;
-  font-size: 1.3rem;
-}
-
-/* ========================================================
-   💻 АДАПТАЦИЯ ПОД ТЕЛЕФОНЫ (ВСЁ ЧЕТКО ПО ЦЕНТРУ)
-   ======================================================== */
-@media (max-width: 1000px) {
-  body {
-    overflow-y: auto; /* Разрешаем вертикальный скролл */
-  }
-
-  .card {
-    position: relative;
-    top: auto;
-    left: auto;
-    transform: none;
-    margin: 20vh auto 0 auto; /* Опускаем на 20% от верха экрана */
-    padding: 30px 20px;
-    width: 85%;
-  }
-
-  @keyframes cardIn {
-    from { opacity: 0; transform: translateY(20px) scale(0.9); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
-
-  .title {
-    font-size: 1.7rem;
-  }
-
-  .congrats-text {
-    position: relative;
-    right: auto;
-    top: auto;
-    transform: none;
-    margin: 30px auto 50px auto;
-    text-align: center;
-    max-width: 90%;
-    padding-bottom: 20px;
-  }
-
-  .congrats-text .line {
-    font-size: 1.15rem;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-    transform: translateY(20px);
-  }
-
-  .congrats-text.show .line {
-    transform: translateY(0);
-  }
-
-  .congrats-text .signature {
-    font-size: 1.2rem;
-  }
 }
